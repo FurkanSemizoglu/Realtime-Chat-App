@@ -7,6 +7,7 @@ dotenv.config();
 
 const app = express();
 
+app.use(cors()); 
 
 const PORT = process.env.PORT || 5000
 
@@ -15,5 +16,5 @@ app.get("/" , (req,res) => {
 })
 
 app.listen(PORT ,() => {
-    console.log("surver is running")
+    console.log("server is running")
 })
