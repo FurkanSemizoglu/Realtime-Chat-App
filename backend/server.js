@@ -3,6 +3,7 @@ const cors = require('cors');
 const dotenv = require("dotenv");
 const bodyParser = require('body-parser');
 const dbConnect = require("./config/dbConnect.js")
+const AuthRoute = require("./routes/authRoutes.js")
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.get("/" , (req,res) => {
     res.send("Server is running")
 })
 
+app.use("/api", AuthRoute);
 
 
 app.listen(PORT ,async() => {

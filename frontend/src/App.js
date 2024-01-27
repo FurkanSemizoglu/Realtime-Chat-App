@@ -1,10 +1,23 @@
-
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 function App() {
-  return (
-    <div className=" text-red-600 text-2xl">
-     HElloo
-    </div>
+ 
+  return (  
+ <>
+  <Router>
+    <Routes>
+
+      <Route path="/" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+    </Routes>
+
+  </Router>
+  {/*  <Router>
+    <Route path='/' component={<Login />} />
+  </Router> */}
+ </>
   );
 }
 
