@@ -20,28 +20,29 @@ const Register = () => {
     (state) => state.auth
   )
 
- console.log(status)
+ 
   const dispatch = useDispatch();
 
-  const [mailData, setMailData] = useState("")
+  const [userName, setUserName] = useState("")
   const [password, setPassword] = useState("");
 
   const onSubmitButton = (e) => {
 
     e.preventDefault();
-    console.log(mailData);
+    console.log(userName);
     console.log(password);
 
+    console.log("biitti mi hikayemiz")
 
-   dispatch(registerUser(mailData,password))
-   console.log("error " , error)
-   console.log(userInfo)
+    dispatch(registerUser({ userName, password }));
+//   console.log("error " , error)
+   console.log("userInfoo" , userInfo)
   
   }
 
-  useEffect(() => {
+ /*  useEffect(() => {
     dispatch(registerUser(mailData,password));
-  }, [dispatch]);
+  }, [dispatch]); */
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
   
@@ -87,7 +88,7 @@ const Register = () => {
               name="email"
               autoComplete="email"
               autoFocus
-              onChange={((event) => setMailData(event.target.value))}
+              onChange={((event) => setUserName(event.target.value))}
             />
           </div>
           <div className="w-[80%]">
