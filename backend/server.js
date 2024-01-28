@@ -27,7 +27,7 @@ app.listen(PORT ,async() => {
 
 
     try {
-        await dbConnect;
+        await dbConnect();
 
         console.log("Connected to DB and server is runnning")
 

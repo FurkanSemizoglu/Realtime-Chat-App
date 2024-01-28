@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import TextField from "@mui/material/TextField";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -11,23 +11,42 @@ import { lime } from "@mui/material/colors";
 import { Link } from 'react-router-dom';
 import { FilledInput, FormControl, InputLabel, ThemeProvider, createTheme } from "@mui/material";
 import backgroundImage from "../extras/bgImage.jpg.jpg";
+import { useDispatch, useSelector } from 'react-redux';
+import { registerUser } from '../reducers/authSlice';
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const { loading,status, userInfo, error, success } = useSelector(
+    (state) => state.auth
+  )
 
+ console.log(status)
+  const dispatch = useDispatch();
 
   const [mailData, setMailData] = useState("")
   const [password, setPassword] = useState("");
 
-  const onSubmitButton = (e,email,password) => {
+  const onSubmitButton = (e) => {
 
     e.preventDefault();
+    console.log(mailData);
+    console.log(password);
+
+
+   dispatch(registerUser(mailData,password))
+   console.log("error " , error)
+   console.log(userInfo)
+  
   }
+
+  useEffect(() => {
+    dispatch(registerUser(mailData,password));
+  }, [dispatch]);
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
   
     const handleMouseDownPassword = (event) => {
-      event.preventDefault();
+      event.preventDefault();     
     };
   
   
@@ -39,9 +58,10 @@ const Register = () => {
     });
 
 
-    console.log(mailData);
-    console.log(password);
+    
   return (
+
+    <form onSubmit={(e) => onSubmitButton(e)}>
     <ThemeProvider theme={theme}>
     <div
       className={`justify-center bg-no-repeat bg-cover bg-center  h-[100%] flex justify-center items-center `}
@@ -111,6 +131,7 @@ const Register = () => {
             color="primary"
             sx={{ mt: 1, mb: 2  }}
            
+           /*  onClick={(e) => onSubmitButton(e)} */
           >
             Sign Up
           </Button>
@@ -121,8 +142,8 @@ const Register = () => {
 
     </ThemeProvider>
 
-    
-  )
+    </form>
+   )
 }
 
 export default Register

@@ -16,20 +16,30 @@ const register = async(req,res) => {
             })
         }
 
+        const user = await User.create({userName,password})
 
-        const newUser = new User({userName,password});
-        const token = createSecretToken(newUser._id)      
+    //    const newUser = new User({userName,password});
+    //    const token = createSecretToken(newUser._id)      
         
+        if(user){
+            console.log("User created")
+            res.status(201).json({
+                message : "User signed up succesfully",
+                success : true,
+                _id : user._id,
+                userName : user.userName,
+                token : createSecretToken(user._id) 
+            });
+        }
+        else{
+            res.status(400);
+            throw new Error("Failed to create new user")
+        }
 
 
-        const result = await newUser.save() 
+   //     const result = await newUser.save() 
             
-        console.log("User created")
-        res.status(201).json({
-            message : "User signed up succesfully",
-            success : true,
-            result
-        });
+       
 
       
 
@@ -46,13 +56,29 @@ const register = async(req,res) => {
 
 const LogIn = async(req,res)=> {
     const {userName , password} = req.body;
-    await User.findOne({userName })
-        .then(user =>{
-            if(!user){
-                return res.status(400).json({
-                    error: "User not found"
-                })
-            }
+    const user = await User.findOne({userName })
+
+    if(!user){
+        return res.status(400).json({
+            error: "User not found"
+        })
+    }
+
+
+    if(user && User.matchPassword(password)){
+        res.status(201).json({
+            message : "User signed in succesfully",
+            success : true,
+            _id : user._id,
+            userName : user.userName,
+            token : createSecretToken(user._id) 
+        });
+
+    }
+
+
+        
+          
 
             if(!user.authenticate(password)){
                 return res.status(400).json({
@@ -65,7 +91,7 @@ const LogIn = async(req,res)=> {
 
             const { _id, userName } = user;
             return res.json({ token, user: { _id, userName } });
-        } )
+        
 
 }
 
