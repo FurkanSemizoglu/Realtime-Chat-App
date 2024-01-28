@@ -63,9 +63,16 @@ const LogIn = async(req,res)=> {
             error: "User not found"
         })
     }
+    const isPasswordMatch = await user.matchPassword(password);
 
 
-    if(user && User.matchPassword(password)){
+    if (!isPasswordMatch) {
+        return res.status(400).json({
+            error: "Invalid password"
+        });
+    }
+
+    if(user && isPasswordMatch){
         res.status(201).json({
             message : "User signed in succesfully",
             success : true,
@@ -76,22 +83,18 @@ const LogIn = async(req,res)=> {
 
     }
 
+/*     
+    if(!user.authenticate(password)){
+        return res.status(400).json({
+            error : "email or password does not exist"
+        })
+    } */
 
-        
-          
-
-            if(!user.authenticate(password)){
-                return res.status(400).json({
-                    error : "email or password does not exist"
-                })
-            }
-
-            const token = jwtToken.sign({_id : user._id} , 'shhhh')
+   //  const token = jwtToken.sign({_id : user._id} , 'shhhh')
             
 
-            const { _id, userName } = user;
-            return res.json({ token, user: { _id, userName } });
-        
+  //   const { _id, userName } = user;
+   //  return res.json({ token, user: { _id, userName } });
 
 }
 
