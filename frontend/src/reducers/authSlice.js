@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+
 const initialState = {
   loading: false,
   status: "idle",
@@ -36,6 +37,64 @@ export const registerUser = createAsyncThunk("register", async ({ userName, pass
   }
 );
 
+
+export const signInUser = createAsyncThunk("signIn" , async({userName, password}) => {
+
+  try {
+
+    const data = {userName , password}
+    
+    /* const config = {
+      headers: {
+        "Content-Type" : 'text/plain',
+      },
+    }; */
+    const response = await fetch("http://localhost:5000/api/signIn", {
+      method: "POST", 
+      headers: {
+        "Content-Type": "application/json",
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: JSON.stringify(data)
+    })
+
+
+    const jsonResponse = response.json()
+    console.log("response " ,jsonResponse)
+ 
+    jsonResponse.then((result) => {
+      console.log("resulte" , result.success);
+
+      console.log("resulte" , result.message); // This will log the result of the fulfilled promise
+
+      if(result.success === true){
+        window.location = "http://localhost:3000/home"
+      }
+
+    });
+    const parsedData = JSON.parse(jsonResponse)
+
+    console.log("response parsed " ,parsedData)
+ /*    console.log("request payloaddd ", {userName ,password} )
+    const response = await axios.post(
+      "http://localhost:5000/api/signIn",
+      {
+        userName: userName,
+        password: password,
+      },
+      config
+    );
+
+    const logInData = response.data; // Correctly accessing the data property from the response
+    
+     console.log("Response from server:", logInData);  */
+
+   
+  } catch (error) {
+    console.log("error while signin in " , error.message)
+  }
+})
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -53,6 +112,21 @@ const authSlice = createSlice({
         state.success = true; // registration successful
       })
       .addCase(registerUser.rejected, (state, action) => {
+        state.loading = false;
+        state.status = "failed";
+        state.error = action.error.message;
+      })
+      .addCase(signInUser.pending, (state) => {
+        state.loading = true;
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(signInUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.status = "succeeded";
+        state.success = true; // registration successful
+      })
+      .addCase(signInUser.rejected, (state, action) => {
         state.loading = false;
         state.status = "failed";
         state.error = action.error.message;

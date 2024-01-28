@@ -12,10 +12,38 @@ import Button from "@mui/material/Button";
 import { useState } from "react";
 import { lime } from "@mui/material/colors";
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { signInUser } from '../reducers/authSlice';
+
 
 
 const Login = () => {
 
+
+  const { loading,status, userInfo, error, success } = useSelector(
+    (state) => state.auth
+  )
+
+   
+  const dispatch = useDispatch();
+
+  const [userName, setUserName] = useState("")
+  const [password, setPassword] = useState("");
+
+  const onSubmitButton = (e) => {
+
+    e.preventDefault();
+    console.log(userName);
+    console.log(password);  
+    console.log("status1 " , status)
+    console.log("succes1 " , success)
+    dispatch(signInUser({userName, password}));
+    
+  
+    console.log("succes2 " ,  success)
+    console.log("status2 " , status)
+
+  }
 
  
     const [showPassword, setShowPassword] = useState(false);
@@ -34,6 +62,7 @@ const Login = () => {
       },
     });
   return (
+    <form onSubmit={(e) => onSubmitButton(e)}>
     <ThemeProvider theme={theme}>
     <div
       className={`justify-center bg-no-repeat bg-cover bg-center  h-[100%] flex justify-center items-center `}
@@ -59,10 +88,11 @@ const Login = () => {
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={((event) => setUserName(event.target.value))}
             />
           </div>
           <div className="w-[80%]">
-            <FormControl sx={{ width: "100%" }} variant="outlined">
+            <FormControl sx={{ width: "100%" }} variant="outlined" onChange={((event) => setPassword(event.target.value))}>
               <InputLabel htmlFor="outlined-adornment-password">
                 Password
               </InputLabel>
@@ -112,6 +142,7 @@ const Login = () => {
     </div>
 
     </ThemeProvider>
+     </form>
   )
 }
 

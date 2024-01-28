@@ -32,17 +32,13 @@ const Register = () => {
     console.log(userName);
     console.log(password);
 
-    console.log("biitti mi hikayemiz")
+   
 
     dispatch(registerUser({ userName, password }));
 //   console.log("error " , error)
    console.log("userInfoo" , userInfo)
   
   }
-
- /*  useEffect(() => {
-    dispatch(registerUser(mailData,password));
-  }, [dispatch]); */
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
   
