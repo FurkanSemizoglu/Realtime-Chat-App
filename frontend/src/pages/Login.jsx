@@ -1,5 +1,5 @@
 import React from 'react'
-import { FilledInput, FormControl, InputLabel, ThemeProvider, createTheme } from "@mui/material";
+import { CircularProgress, FilledInput, FormControl, InputLabel, ThemeProvider, createTheme } from "@mui/material";
 import backgroundImage from "../extras/bgImage.jpg.jpg";
 import Card from "@mui/material/Card";
 import TextField from "@mui/material/TextField";
@@ -36,7 +36,8 @@ const Login = () => {
     console.log(userName);
     console.log(password);  
     console.log("status1 " , status)
-    console.log("succes1 " , success)
+    console.log("succes1 " , success);
+
     dispatch(signInUser({userName, password}));
     
   
@@ -92,7 +93,7 @@ const Login = () => {
             />
           </div>
           <div className="w-[80%]">
-            <FormControl sx={{ width: "100%" }} variant="outlined" onChange={((event) => setPassword(event.target.value))}>
+            <FormControl sx={{ width: "100%" }} variant="outlined"  onChange={(event) => setPassword(event.target.value)}>
               <InputLabel htmlFor="outlined-adornment-password">
                 Password
               </InputLabel>
@@ -134,7 +135,7 @@ const Login = () => {
             color="primary"
             sx={{ mt: 1, mb: 2  }}
           >
-            Sign In
+             {loading ? <CircularProgress /> : "Sign In"}
           </Button>
           {/* <Button variant="contained">Contained</Button> */}
         </div>

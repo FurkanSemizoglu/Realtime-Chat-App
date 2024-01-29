@@ -9,14 +9,14 @@ import Button from "@mui/material/Button";
 import { useState } from "react";
 import { lime } from "@mui/material/colors";
 import { Link } from 'react-router-dom';
-import { FilledInput, FormControl, InputLabel, ThemeProvider, createTheme } from "@mui/material";
+import { CircularProgress, FilledInput, FormControl, InputLabel, ThemeProvider, createTheme } from "@mui/material";
 import backgroundImage from "../extras/bgImage.jpg.jpg";
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser } from '../reducers/authSlice';
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const { loading,status, userInfo, error, success } = useSelector(
+  const { loading,status, userInfo, userToken,error, success } = useSelector(
     (state) => state.auth
   )
 
@@ -26,17 +26,19 @@ const Register = () => {
   const [userName, setUserName] = useState("")
   const [password, setPassword] = useState("");
 
-  const onSubmitButton = (e) => {
+  const onSubmitButton = async(e) => {
 
     e.preventDefault();
     console.log(userName);
     console.log(password);
 
    
+    console.log("statusss"  , status)
+    await dispatch(registerUser({ userName, password }));
 
-    dispatch(registerUser({ userName, password }));
-//   console.log("error " , error)
+    console.log("status2 " , status)
    console.log("userInfoo" , userInfo)
+   console.log(userToken)
   
   }
 
@@ -130,7 +132,7 @@ const Register = () => {
            
            /*  onClick={(e) => onSubmitButton(e)} */
           >
-            Sign Up
+           {loading ? <CircularProgress /> : "Sign Up"}
           </Button>
           {/* <Button variant="contained">Contained</Button> */}
         </div>

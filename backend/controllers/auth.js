@@ -10,7 +10,7 @@ const register = async (req, res) => {
     const existingUser = await User.findOne({ userName });
 
     if (existingUser) {
-      return res.json({
+      return res.status(400).json({
         message: "User already exist",
       });
     }
@@ -55,7 +55,7 @@ const LogIn = async (req, res) => {
     const isPasswordMatch = await user.matchPassword(password);
 
     if (!isPasswordMatch) {
-      return res.status(400).json({
+      return res.json({
         error: "Invalid password",
       });
     }

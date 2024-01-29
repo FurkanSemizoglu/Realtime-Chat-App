@@ -31,6 +31,12 @@ export const registerUser = createAsyncThunk("register", async ({ userName, pass
       );
 
       console.log("Response from server:", data);
+
+      console.log("datacehck" ,data.success)
+
+      if(data.success){
+        window.location = "http://localhost:3000"
+      }
     } catch (error) {
       console.log("error while connecting to backend " , error.message)
     }
@@ -39,9 +45,9 @@ export const registerUser = createAsyncThunk("register", async ({ userName, pass
 
 
 export const signInUser = createAsyncThunk("signIn" , async({userName, password}) => {
-
+/* 
   try {
-
+ */
     const data = {userName , password}
     
     /* const config = {
@@ -59,10 +65,15 @@ export const signInUser = createAsyncThunk("signIn" , async({userName, password}
     })
 
 
-    const jsonResponse = response.json()
+    const jsonResponse = await response.json();
+
     console.log("response " ,jsonResponse)
  
-    jsonResponse.then((result) => {
+    if(jsonResponse.success){
+      window.location = "http://localhost:3000/home"
+    }
+
+   /*  jsonResponse.then((result) => {
       console.log("resulte" , result.success);
 
       console.log("resulte" , result.message); // This will log the result of the fulfilled promise
@@ -71,10 +82,8 @@ export const signInUser = createAsyncThunk("signIn" , async({userName, password}
         window.location = "http://localhost:3000/home"
       }
 
-    });
-    const parsedData = JSON.parse(jsonResponse)
-
-    console.log("response parsed " ,parsedData)
+    }); */
+  
  /*    console.log("request payloaddd ", {userName ,password} )
     const response = await axios.post(
       "http://localhost:5000/api/signIn",
@@ -90,9 +99,9 @@ export const signInUser = createAsyncThunk("signIn" , async({userName, password}
      console.log("Response from server:", logInData);  */
 
    
-  } catch (error) {
+/*   } catch (error) {
     console.log("error while signin in " , error.message)
-  }
+  } */
 })
 
 const authSlice = createSlice({
@@ -107,9 +116,24 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(registerUser.fulfilled, (state, action) => {
+
+       /*  return {
+          ...state,
+          loading: false,
+          status: "succeeded",
+          success: true,
+          userInfo: action.payload,
+        }; */
         state.loading = false;
         state.status = "succeeded";
         state.success = true; // registration successful
+        state.userInfo = action.payload
+
+        console.log("action" , action)
+
+        console.log("action payload " , action.payload)
+
+   //     state.userToken = action.payload.token;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
@@ -125,6 +149,8 @@ const authSlice = createSlice({
         state.loading = false;
         state.status = "succeeded";
         state.success = true; // registration successful
+        state.userInfo = action.payload;
+        console.log("payload" , action.payload)
       })
       .addCase(signInUser.rejected, (state, action) => {
         state.loading = false;
