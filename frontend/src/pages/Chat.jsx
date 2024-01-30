@@ -1,12 +1,23 @@
-import React from 'react'
-import ChatNavbar from '../components/ChatNavbar'
+import React from "react";
+import ChatNavbar from "../components/ChatNavbar";
+import LeftBar from "../components/LeftBar";
+import ChatBox from "../components/ChatBox";
 
 const Chat = () => {
   return (
-   <>
-   <ChatNavbar />
-   </>
-  )
-}
+    <>
+      <div className="">
+        <ChatNavbar />
 
-export default Chat
+        <div className="flex">
+
+        <LeftBar />
+
+        <ChatBox />
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Chat;
