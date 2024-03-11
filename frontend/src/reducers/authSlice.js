@@ -1,5 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { Bounce, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const initialState = {
   loading: false,
@@ -35,7 +38,21 @@ export const registerUser = createAsyncThunk("register", async ({ userName, pass
       console.log("datacehck" ,data.success)
 
       if(data.success){
+        toast.success( "Signed Up ", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Bounce,
+          });
+
         window.location = "http://localhost:3000"
+
+       
       }
     } catch (error) {
       console.log("error while connecting to backend " , error.message)
@@ -69,8 +86,34 @@ export const signInUser = createAsyncThunk("signIn" , async({userName, password}
 
     console.log("response " ,jsonResponse)
  
+
+    console.log("response message" ,  jsonResponse.message)
+
+    toast.error( jsonResponse.message, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      transition: Bounce,
+      });
+
     if(jsonResponse.success){
-      window.location = "http://localhost:3000/home"
+      toast.success( "Logged In ", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+        });
+      window.location = `http://localhost:3000/home/${userName}`
     }
 
    /*  jsonResponse.then((result) => {
@@ -150,12 +193,14 @@ const authSlice = createSlice({
         state.status = "succeeded";
         state.success = true; // registration successful
         state.userInfo = action.payload;
-        console.log("payload" , action.payload)
+        console.log("payload" , action)
+       
       })
       .addCase(signInUser.rejected, (state, action) => {
         state.loading = false;
         state.status = "failed";
         state.error = action.error.message;
+       
       });
   },
 });

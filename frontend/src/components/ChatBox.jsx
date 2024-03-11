@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import io from "socket.io-client";
 
-const ChatBox = () => {
+const ChatBox = ({userName}) => {
   const socket = io.connect('http://localhost:5000');
+
+  const targetUser = "Furkan"
 
   const [text, setText] = useState("");
 
@@ -12,6 +14,12 @@ const ChatBox = () => {
     if(text){
       console.log("emitting message")
       socket.emit('chat message',text)
+
+      socket.emit("private message" , {
+        text,
+        to: userName.id
+      })
+
       setText(""); 
     }
     console.log(text);
