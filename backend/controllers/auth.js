@@ -43,15 +43,20 @@ const register = async (req, res) => {
 };
 
 const LogIn = async (req, res) => {
+  console.log("user foundesd")
   try {
-   
+
+
+    const { userName, password } = req.body;
     const user = await User.findOne({ userName });
+
 
     if (!user) {
       return res.status(400).json({
         error: "User not found",
       });
     }
+
     const isPasswordMatch = await user.matchPassword(password);
 
     if (!isPasswordMatch) {
@@ -60,6 +65,7 @@ const LogIn = async (req, res) => {
       });
     }
 
+    
     if (user && isPasswordMatch) {
       return res.status(201).json({
         message: "User signed in succesfully",
