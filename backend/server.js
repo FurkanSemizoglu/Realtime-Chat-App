@@ -4,8 +4,10 @@ const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 const dbConnect = require("./config/dbConnect.js");
 const AuthRoute = require("./routes/authRoutes.js");
+const messageRoutes = require("./routes/messageRoutes.js");
 const http = require("http");
 const { Server } = require('socket.io');
+const cookieParser = require('cookie-parser');
 
 const socketio = require("socket.io");
 
@@ -37,7 +39,7 @@ const io = new Server(server, {
   });
 
 app.use(cors());
-
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: "true" }));
 app.use(bodyParser.json({ limit: "30mb", extended: "true" }));
 
@@ -51,6 +53,8 @@ app.get("/" , (req,res) => {
 });
  */
 app.use("/api", AuthRoute);
+
+app.use("/api/messages" , messageRoutes)
 
 /* const io = socketio(server);
 

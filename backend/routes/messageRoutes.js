@@ -1,5 +1,4 @@
-import { sendMessage } from "../controllers/messageController.js";
-
+const { sendMessage} = require("../controllers/messageController.js");
 const express = require("express");
 
 
@@ -8,4 +7,4 @@ const router = express.Router();
 router.post("/send/:id" , sendMessage)
 
 
-export default router;
+module.exports = router;
